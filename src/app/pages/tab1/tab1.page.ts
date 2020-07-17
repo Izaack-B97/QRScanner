@@ -17,23 +17,23 @@ export class Tab1Page {
 
   // Se dispara cuando la vista es termina de cargar
   ionViewDidEnter(){
-    console.log('viewDidEnter');
+    // console.log('viewDidEnter');
   }
 
   // Cuando la pagina ya salio de la vista del usuario
   ionViewDidLeave(){
-    console.log('viewDidLeave');
+    // console.log('viewDidLeave');
   }
 
   // La pagina va a cargar
   ionViewWillEnter(){
-    console.log('viewWillEnter');
+    // console.log('viewWillEnter');
     this.scan();
   }
 
   // Se dispara cuando abanadonas la pagina
   ionViewWillLeave(){
-    console.log('viewWillLeave');
+    // console.log('viewWillLeave');
   }
 
   // Metodo para scanear
