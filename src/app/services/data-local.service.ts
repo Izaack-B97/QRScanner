@@ -3,15 +3,16 @@ import { Registro } from '../models/registro.model';
 import { Storage } from '@ionic/storage';
 import { NavController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataLocalService {
-
+  fileName = 'registros.csv';
   registros: Registro[] = [];
 
-  constructor(private storage: Storage, private navCtlr: NavController, private iab: InAppBrowser) {
+  constructor(private storage: Storage, private navCtlr: NavController, private iab: InAppBrowser, private file: File) {
     this.cargarStorage();
   }
 
@@ -50,5 +51,40 @@ export class DataLocalService {
         this.navCtlr.navigateForward(`/tabs/tab2/mapa/${ruta}`);
         break;
     }
+  }
+
+  // Enviaremos los registros
+  enviarCorreo(){
+    const arrTemp = [];
+    const titulos = 'Tipo, Formato, Creado en, Texto\n';
+
+    arrTemp.push(titulos);
+    this.registros.forEach(registro => {
+      const linea = `${registro.type}, ${registro.format}, ${registro.created}, ${registro.text.replace(',', ' ')}\n`;
+      arrTemp.push(linea);
+    });
+    // console.log(arrTemp.join());
+
+    this.crearArchivoFisico(arrTemp.join());
+  }
+
+  crearArchivoFisico(text: string) {
+    // Checamos si existe el archv
+    this.file.checkFile( this.file.dataDirectory, this.fileName)
+      .then(existe => {
+        console.log('Existe el archivo', true);
+        return this.escribirArchivo(text); // Actualizamos el archivo
+      })
+      .catch(err => {
+        return this.file.createFile(this.file.dataDirectory, this.fileName, false) // Creamos el archivo si no existe
+          .then(creado => this.escribirArchivo(text))
+          .catch(err2 => console.log('Error al crear el archivo', err2));
+      });
+  }
+
+  async escribirArchivo(text: string){
+    await this.file.writeExistingFile(this.file.dataDirectory, this.fileName, text);
+    console.log('Archivo creado');
+    console.log(this.file.dataDirectory + this.fileName);
   }
 }
