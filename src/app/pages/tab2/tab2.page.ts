@@ -14,7 +14,8 @@ export class Tab2Page {
     console.log('Enviando a correo');
   }
 
-  abrirRegistro(){
-    console.log('Abriendo registro');
+  abrirRegistro(registro){
+    console.log('Abriendo registro', registro);
+    this.dataLocal.abrirRegistro(registro);
   }
 }
