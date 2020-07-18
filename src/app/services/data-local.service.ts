@@ -39,13 +39,15 @@ export class DataLocalService {
   abrirRegistro(registro: Registro){
     // El navController nos permite navegar entre paginas
     this.navCtlr.navigateForward('/tabs/tab2');
-
+    let ruta = '';
     switch (registro.type) {
       case 'http':
-        const url = registro.text;
-        setTimeout(() => {
-          this.iab.create( url, '_system'); // abre el navegador por default del disposito
-        }, 1000);
+        ruta = registro.text;
+        this.iab.create( ruta, '_system'); // abre el navegador por default del disposito
+        break;
+      case 'geo':
+        ruta = registro.text;
+        this.navCtlr.navigateForward(`/tabs/tab2/mapa/${ruta}`);
         break;
     }
   }

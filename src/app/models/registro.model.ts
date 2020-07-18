@@ -35,8 +35,8 @@ export class Registro {
                 this.type = 'http';
                 this.icon = 'globe';
                 break;
-            case 'geo':
-                this.type = 'http';
+            case 'geo:':
+                this.type = 'geo';
                 this.icon = 'globe';
                 break;
             default:
