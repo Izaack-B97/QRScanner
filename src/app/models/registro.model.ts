@@ -1,4 +1,6 @@
-/**
+/** FIXME: Cambiar el icono de las geolocalizaciones
+ *  TODO: Programar enviar solo un scaneo
+ *  @autor Isaac Bustamante
  * Este modelo nos servira para el registro de los scaneos.
  *
  * Parametros
@@ -37,7 +39,7 @@ export class Registro {
                 break;
             case 'geo:':
                 this.type = 'geo';
-                this.icon = 'globe';
+                this.icon = 'location';
                 break;
             default:
                 this.type = 'No reconocido';
