@@ -1,6 +1,7 @@
-/** FIXME: Cambiar el icono de las geolocalizaciones
- *  TODO: Programar enviar solo un scaneo
+/** TODO: Programar enviar solo un scaneo
+ *
  *  @autor Isaac Bustamante
+ *
  * Este modelo nos servira para el registro de los scaneos.
  *
  * Parametros

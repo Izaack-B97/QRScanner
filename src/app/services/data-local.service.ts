@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Registro } from '../models/registro.model';
 import { Storage } from '@ionic/storage';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { EmailComposer } from '@ionic-native/email-composer/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+
+/**
+ * FIXME: Corregir el formato del csv, esta mal formateado al enviarse en un archivo csv
+ */
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +23,9 @@ export class DataLocalService {
     private navCtlr: NavController,
     private iab: InAppBrowser,
     private file: File,
-    private emailComposer: EmailComposer) {
+    private emailComposer: EmailComposer,
+    private  socialSharing: SocialSharing,
+    private toastCtrl: ToastController) {
 
     this.cargarStorage();
 
@@ -64,14 +71,15 @@ export class DataLocalService {
   // Enviaremos los registros
   enviarCorreo(){
     const arrTemp = [];
-    const titulos = 'Tipo, Formato, Creado en, Texto\n';
+    const titulos = 'Tipo, Formato, Creado en, Texto';
 
     arrTemp.push(titulos);
     this.registros.forEach(registro => {
-      const linea = `${registro.type}, ${registro.format}, ${registro.created}, ${registro.text.replace(',', ' ')}\n`;
+      const linea = `${registro.type}, ${registro.format}, ${registro.created}, ${registro.text.replace(',', ' ')}`;
       arrTemp.push(linea);
     });
-    // console.log(arrTemp.join());
+    // console.log(arrTemp.join(','));
+    // console.log(arrTemp);
 
     this.crearArchivoFisico(arrTemp.join());
   }
@@ -114,5 +122,45 @@ export class DataLocalService {
 
     // Send a text message using default options
     this.emailComposer.open(email);
+  }
+
+  // Compartir en redes sociales
+  compartir(registro: Registro){
+    let url: string;
+    if (registro.type === 'http') {
+      url = registro.text;
+    }
+    if (registro.type === 'geo') {
+      const coordenadas = registro.text.substr(4).split(',');
+      const lat = coordenadas[0];
+      const lng = coordenadas[1];
+      url = `https://maps.google.com/?q=${lat},${lng}`;
+    }
+
+    // Compartimos en cualquier red social
+    this.socialSharing.share(
+      `Formato: ${registro.format}`,
+      `Tipo de scaneo ${registro.type}`,
+      '',
+      url
+    );
+  }
+
+  // Elimina del Storage
+  eliminar(registro: Registro) {
+    this.registros = this.registros.filter(registrado => registrado.text !== registro.text);
+    this.storage.set('guardados', this.registros);
+    this.presentToast('Eliminado', 'danger');
+  }
+
+  // Funcion que servira para notificar
+  async presentToast(message: string, color: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 1500,
+      color,
+      position: 'top'
+    });
+    toast.present();
   }
 }

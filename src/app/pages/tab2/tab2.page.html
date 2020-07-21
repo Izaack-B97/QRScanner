@@ -6,20 +6,41 @@
 
     <ion-buttons slot="end">
       <ion-button (click)="enviarCorreo()" color="primary">
-        <ion-icon name="send" slot="icon-only"></ion-icon>
+        <ion-icon name="mail" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list>
-    <ion-item detail *ngFor="let registro of dataLocal.registros" (click)="abrirRegistro(registro)">
-      <ion-icon slot="start" [name]="registro.icon" color="primary"></ion-icon>
-      <ion-label>
-        <h2>{{ registro.text }}</h2>
-        <p>{{ registro.created | date: 'medium' }}</p>
-      </ion-label>
-    </ion-item>
+
+  
+  <ion-slides *ngIf="dataLocal.registros.length === 0" [options]="slidesOpts" class="full-hight-vertical">
+    <ion-slide>
+      <h6>No hay registros</h6>
+    </ion-slide>
+  </ion-slides>
+
+
+  <ion-list #lista_registros *ngIf="dataLocal.registros !== null">
+    <ion-item-sliding *ngFor="let registro of dataLocal.registros">
+      <ion-item detail (click)="abrirRegistro(registro)">
+        <ion-icon [name]="registro.icon" slot="start"></ion-icon>
+        <ion-label>
+          <h2>{{ registro.text }}</h2>
+          <p>{{ registro.created | date: 'medium' }}</p>
+        </ion-label>
+      </ion-item>
+      <!-- start options -->
+      <ion-item-options side="end">
+        <ion-item-option (click)="compartir(registro)" color="primary">
+          <ion-icon name="share-social" slot="icon-only"></ion-icon>
+        </ion-item-option>
+        <ion-item-option (click)="eliminar(registro)" color="danger">
+          <ion-icon name="trash"  slot="icon-only"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+      <!-- end options -->
+    </ion-item-sliding>
   </ion-list>
 </ion-content>
