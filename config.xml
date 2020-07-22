@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.fernandoherrera.appqr01" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.github.izaakc-b97.qrscanner" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QRScanner</name>
-    <description>An awesome Ionic/Cordova app.</description>
-    <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <description>Scanner App and Sharing Backup in Ionic</description>
+    <author email="izaack.97@gmail.com" href="https://github.com/Izaack-B97">Isaac Bustamante</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

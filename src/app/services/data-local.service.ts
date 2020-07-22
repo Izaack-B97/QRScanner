@@ -8,7 +8,7 @@ import { EmailComposer } from '@ionic-native/email-composer/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 /**
- * FIXME: Corregir el formato del csv, esta mal formateado al enviarse en un archivo csv
+ * FIXME: Corregir el formato del csv, esta mal formateado al enviarse en un archivo csv  
  */
 
 @Injectable({
@@ -72,6 +72,10 @@ export class DataLocalService {
   enviarCorreo(){
     const arrTemp = [];
     const titulos = 'Tipo, Formato, Creado en, Texto';
+
+    if (this.registros) {
+      this.presentToast('No hay registros en el historia', 'danger');
+    }
 
     arrTemp.push(titulos);
     this.registros.forEach(registro => {
@@ -150,7 +154,7 @@ export class DataLocalService {
   eliminar(registro: Registro) {
     this.registros = this.registros.filter(registrado => registrado.text !== registro.text);
     this.storage.set('guardados', this.registros);
-    this.presentToast('Eliminado', 'danger');
+    this.presentToast('Eliminado Satisfactoriamete', 'primary');
   }
 
   // Funcion que servira para notificar
@@ -159,7 +163,7 @@ export class DataLocalService {
       message,
       duration: 1500,
       color,
-      position: 'top'
+      position: 'bottom'
     });
     toast.present();
   }
