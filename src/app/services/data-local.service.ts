@@ -8,7 +8,7 @@ import { EmailComposer } from '@ionic-native/email-composer/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 /**
- * FIXME: Corregir el formato del csv, esta mal formateado al enviarse en un archivo csv  
+ * FIXME: Corregir el formato del csv, esta mal formateado al enviarse en un archivo csv
  */
 
 @Injectable({
@@ -68,24 +68,24 @@ export class DataLocalService {
     }
   }
 
-  // Enviaremos los registros
+  // Enviaremos los registros al correo por default del sistema
   enviarCorreo(){
     const arrTemp = [];
     const titulos = 'Tipo, Formato, Creado en, Texto';
 
     if (this.registros) {
-      this.presentToast('No hay registros en el historia', 'danger');
+      this.presentToast('No hay registros en el historial', 'danger');
+    } else {
+      arrTemp.push(titulos);
+      this.registros.forEach(registro => {
+        const linea = `${registro.type}, ${registro.format}, ${registro.created}, ${registro.text.replace(',', ' ')}`;
+        arrTemp.push(linea);
+      });
+      // console.log(arrTemp.join(','));
+      // console.log(arrTemp);
+
+      this.crearArchivoFisico(arrTemp.join());
     }
-
-    arrTemp.push(titulos);
-    this.registros.forEach(registro => {
-      const linea = `${registro.type}, ${registro.format}, ${registro.created}, ${registro.text.replace(',', ' ')}`;
-      arrTemp.push(linea);
-    });
-    // console.log(arrTemp.join(','));
-    // console.log(arrTemp);
-
-    this.crearArchivoFisico(arrTemp.join());
   }
 
   crearArchivoFisico(text: string) {
@@ -138,7 +138,7 @@ export class DataLocalService {
       const coordenadas = registro.text.substr(4).split(',');
       const lat = coordenadas[0];
       const lng = coordenadas[1];
-      url = `https://maps.google.com/?q=${lat},${lng}`;
+      url = `https://maps.google.com/?q=${lat},${lng}`; // Link que nos permitira abrir en google maps
     }
 
     // Compartimos en cualquier red social
